@@ -1,0 +1,9 @@
+total 48
+-rwxrwxrwx 1 bhami bhami   287 Jan  7 10:32 Week 1-2.md
+-rwxrwxrwx 1 bhami bhami 15960 Jan  6 08:22 a.out
+-rwxrwxrwx 1 bhami bhami     0 Jan  7  2026 bar.txt
+-rwxrwxrwx 1 bhami bhami     1 Jan  7 11:01 foo.txt
+-rwxrwxrwx 1 bhami bhami 15960 Jan  6 08:23 hello
+-rwxrwxrwx 1 bhami bhami    70 Jan  6 08:22 hello.c
+-rwxrwxrwx 1 bhami bhami 16048 Jan  7 10:37 w
+-rwxrwxrwx 1 bhami bhami   127 Jan  7 10:37 w.c
