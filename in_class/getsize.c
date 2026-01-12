@@ -10,7 +10,7 @@ int main(int argc, char *argv[]){
     for (int i = 1; i < argc; i++){
       struct stat buf;
       stat(argv[i], &buf);
-      printf("%s: %d",argv[i], buf.st_size);
+      printf("%s: %d\n",argv[i], buf.st_size);
     }
   }
 
