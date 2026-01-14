@@ -13,4 +13,7 @@ int main()
     struct dirent *d = readdir(dir_point);
     printf("%s\n", d->d_name);
   }
+
+  closedir(dir_point);
+
 }
