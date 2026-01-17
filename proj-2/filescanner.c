@@ -5,22 +5,19 @@
 #include <stdint.h>
 #include <string.h>
 
+#define MAX_SIZE 4096
+#define MIN_SIZE 0
 
 void expand(DIR* dir, char* parent_path)
 {
   struct stat sb;
   struct dirent *d  = readdir(dir);
 
-  int dir_size = 0;
+  long long dir_size = MIN_SIZE;
 
-  char full_path[4096];
+  char full_path[MAX_SIZE];
 
-  while (d != NULL){
-    d = readdir(dir);
-    
-    if (d == NULL){
-      break;
-    }
+  while ((d = readdir(dir)) != NULL){
 
     if ((strcmp(d->d_name, ".") == 0 || strcmp(d->d_name, "..")) == 0){
       continue;
@@ -30,41 +27,37 @@ void expand(DIR* dir, char* parent_path)
 
     if (stat(full_path, &sb) == 0){
       dir_size = dir_size + sb.st_size;
-
     }
 
     if (S_ISDIR(sb.st_mode)){
       DIR* new_dir = opendir(full_path);
-      
       expand(new_dir, full_path);
-   
     }
-
   }
   
   closedir(dir);
-  printf("%s: %d\n", parent_path, dir_size);
+  printf("%s: %lld\n", parent_path, dir_size);
 
 }
 
 int main(int argc, char* argv[])
 {
-  DIR* dirpoint;
-  if (argc == 1){
 
+  DIR* dirpoint;
+
+  if (argc == 1){
     dirpoint = opendir(".");
     expand(dirpoint, ".");
-
-  } else if (argc > 2){
-
+  } 
+  
+  else if (argc > 2){
     printf("To Many Arguments\n");
     return 1;
-
-  } else {
-
+  } 
+  
+  else {
     dirpoint = opendir(argv[1]);
     expand(dirpoint, argv[1]);
-
   }
 }
 
