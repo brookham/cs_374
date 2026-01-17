@@ -6,18 +6,6 @@
 #include <string.h>
 
 
-//recursive function
-// int dir_size(struct dirent *d)
-// {
-//   struct stat sb;
-//   if (S_ISDIR(sb.st_mode)){
-
-//   }
-
-// }
-
-
-//read dir function
 void expand(DIR* dir, char* parent_path)
 {
   struct stat sb;
@@ -25,7 +13,7 @@ void expand(DIR* dir, char* parent_path)
 
   int dir_size = 0;
 
-  char full_path[256];
+  char full_path[4096];
 
   while (d != NULL){
     d = readdir(dir);
@@ -38,7 +26,7 @@ void expand(DIR* dir, char* parent_path)
       continue;
     }
 
-    sprintf(full_path, "%s/%s", parent_path, d->d_name);
+    snprintf(full_path, sizeof(full_path), "%s/%s", parent_path, d->d_name);
 
     if (stat(full_path, &sb) == 0){
       dir_size = dir_size + sb.st_size;
@@ -55,26 +43,29 @@ void expand(DIR* dir, char* parent_path)
   }
   
   closedir(dir);
-  printf("%s: %d\n", full_path, dir_size);
+  printf("%s: %d\n", parent_path, dir_size);
 
 }
-
-
 
 int main(int argc, char* argv[])
 {
   DIR* dirpoint;
   if (argc == 1){
+
     dirpoint = opendir(".");
     expand(dirpoint, ".");
+
   } else if (argc > 2){
+
+    printf("To Many Arguments\n");
     return 1;
+
   } else {
+
     dirpoint = opendir(argv[1]);
     expand(dirpoint, argv[1]);
+
   }
-  
-  
 }
 
 
