@@ -7,26 +7,28 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-
 int main(int argc, char *argv[])
 {
-    int fd;
+  int fd;
 
-    mkfifo("./producer", 0644);
+  mkfifo("./producer", 0644);
 
-    fd = open("./producer", O_WRONLY);
+  printf("waiting for readers...\n");
+  fd = open("./producer", O_WRONLY);
 
-    if (argc > 2){
-      perror("wrong");
-    }else{
-      int limit = atoi(argv[1]);
-      int count;
-      while (count < limit) {
-        printf("sending %d, message#%d", count, count);
-      }
-    }
+  if (argc != 2)
+  {
+    perror("wrong");
+  }
 
-    write(fd, argv[1], 16);
+  int limit = atoi(argv[1]);
+  for (int count = 0; count < limit; count++)
+  {
+    printf("Sending %d Message #%d\n", count, count);
+    write(fd, &count, 1);
     sleep(1);
-    close(fd);
+  }
+
+  close(fd);
+  return 0;
 }

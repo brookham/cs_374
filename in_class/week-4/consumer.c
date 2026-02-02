@@ -10,23 +10,28 @@
 
 int main(void)
 {
-    char buf[300];
-
+    unsigned char msg_num;
+    char buf[16];
     int num, fd;
 
     mkfifo("./producer", 0644);
 
+    printf("waiting for writers...\n");
     fd = open("./producer", O_RDONLY);
 
-    while(1){
-      if((num = read(fd, buf, 24)) == -1){
-        perror("read");
-      }
-      else{
-        if(num > 0){
-          printf("read: %s", buf); 
+    while (1) {
+        num = read(fd, &msg_num, 1);
+        if (num == -1) {
+            perror("read");
+            break;
+        } else if (num == 0) {
+            break;
+        } else {
+            sprintf(buf, "%u: Message #%u\n", msg_num, msg_num);
+            printf("%s", buf);
         }
-      }
     }
+
+    close(fd);
     return 0;
 }
