@@ -3,7 +3,7 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   if (argc < 3){
     printf("usage: redirout filename command [arg1 [arg2 ... ] ]\n");
