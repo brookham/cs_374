@@ -70,7 +70,7 @@ int main(void)
 
       if (execvp(tokens[0], tokens) == -1)
       {
-
+        perror("exec");
         exit(1);
       }
       else
