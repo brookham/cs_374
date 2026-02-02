@@ -1,11 +1,16 @@
 CC = gcc
 CFLAGS = -Wall -std=c99
-TARGET = lswc
+TARGETS = lswc redirout
 
-$(TARGET): lswc.c
-	$(CC) $(CFLAGS) -o $(TARGET) lswc.c
+all: $(TARGETS)
+
+lswc: lswc.c
+	$(CC) $(CFLAGS) -o lswc lswc.c
+
+redirout: redirout.c
+	$(CC) $(CFLAGS) -o redirout redirout.c
 
 clean:
-	rm -f $(TARGET)
+	rm -f $(TARGETS)
 
-.PHONY: clean
+.PHONY: all clean

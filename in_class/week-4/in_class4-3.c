@@ -8,7 +8,7 @@ int main(void)
 
   dup2(fd, 1);
   printf("Hello, world\nThis is a test!\n");
-  fflush(stdout);
+  
 
   close(fd);
 }
