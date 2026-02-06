@@ -8,22 +8,28 @@
 
 #define DATA_SIZE 1024
 
-int main(char *argv[])
+int main(int argc, char *argv[])
 {
-  int fd = open("data.dat", O_RDWR);
 
+  //open file for read/write
+  int fd = open("data.dat", O_RDWR);
+  //map file into memory
   void *data = mmap(NULL, DATA_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
 
-  int *i = data
+  //put int at the start of the mapping
+  int *i = (int *)data;
   *i = atoi(argv[1]);
-  *(i+1) = atof(argv[2]);
 
-  float *j = (float *)(i+1);
+  //place float right after int
+  float *f = (float *)(i + 1);
+  *f = strtof(argv[2], NULL);
 
-  strcpy(*i, data);
-  strcpy(j, data);
+  //place string right after float
+  char *s = (char *)(f + 1);
+  strcpy(s, argv[3]);
 
-  munmap(data, sizeof(i) + sizeof(j));
-  close(fd)
+  munmap(data, DATA_SIZE);
+
+  close(fd);
 
 }

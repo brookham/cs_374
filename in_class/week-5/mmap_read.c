@@ -1,31 +1,34 @@
-// #include <fcntl.h>
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <sys/mman.h>
-// #include <sys/stat.h>
-// #include <unistd.h>
-// #include <string.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <string.h>
 
-// #define DATA_SIZE 1024
+#define DATA_SIZE 1024
 
-// int main(char *argv[])
-// {
+int main()
+{
 
-//   int fd = open("data.dat", O_RDONLY);
+  int fd = open("data.dat", O_RDONLY);
 
-//   void *data = mmap(NULL, DATA_SIZE, PROT_READ, MAP_SHARED, fd, 0);
+  void *data = mmap(NULL, DATA_SIZE, PROT_READ, MAP_SHARED, fd, 0);
 
-//   int *i = data;
-//   *i = atoi(argv[1]);
-//   *(i+1) = atof(argv[2]);
+  //first bytes as int
+  int *i = (int *)data;
+  //float start right after int
+  float *f = (float *)(i + 1);
+  //string starts right after float
+  char *s = (char *)(f + 1);
 
-//   float *j = (float *)(i+1);
+  printf("%d\n", *i);
+  printf("%f\n", *f);
+  printf("%s\n", s);
 
 
 
-//   strcpy(*i, data);
-//   strcpy(j, data);
+  munmap(data, DATA_SIZE);
+  close(fd);
 
-//   munmap(data, sizeof(i) + sizeof(j));
-
-// }
+}
