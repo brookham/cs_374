@@ -7,23 +7,14 @@
 #include <errno.h>
 
 int speed = 0;
+volatile sig_atomic_t speed_adjust = 0;
 
 void speed_handler(int sig)
 {
-  char buf[128];
-  (void)sig;
   if (sig == SIGUSR1)
-  {
-    speed += 1;
-    int len = snprintf(buf, sizeof(buf), "increased to: %d\n", speed);
-    write(1, buf, len);
-  }
-  else if (sig == SIGUSR2 && speed > 0)
-  {
-    speed -= 1;
-    int len = snprintf(buf, sizeof(buf), "decreased to: %d\n", speed);
-    write(1, buf, len);
-  }
+    speed_adjust = 1;
+  if (sig == SIGUSR2)
+    speed_adjust = -1;
 }
 
 int main(int argc, char *argv[])
@@ -54,6 +45,21 @@ int main(int argc, char *argv[])
         NULL,
         NULL,
         &zero);
+
+    if (speed_adjust != 0)
+    {
+      if (speed_adjust == 1)
+      {
+        speed += 1;
+        printf("increased to: %d\n", speed);
+      }
+      else if (speed_adjust == -1 && speed > 0)
+      {
+        speed -= 1;
+        printf("decreased to: %d\n", speed);
+      }
+      speed_adjust = 0;
+    }
 
     char buf[128];
 
